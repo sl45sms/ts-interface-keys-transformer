@@ -157,12 +157,13 @@ const _getPropertiesOfSymbol = (symbol: ts.Symbol, propertyPathElements: Propert
 };
 
 const getPropertyType = (symbol: any): string => {
-  if (symbol.intrinsicName) {
+  if (symbol && symbol.intrinsicName) {
     return symbol.intrinsicName;
   }
-  if (symbol.types) {
+  if (symbol && symbol.types) {
     return symbol.types.map((token: any) => getPropertyType(token));
   }
+  if (symbol && symbol.kind){
   switch (symbol.kind) {
     case ts.SyntaxKind.ArrayType:
       return 'array';
@@ -191,6 +192,8 @@ const getPropertyType = (symbol: any): string => {
     default:
       return 'unknown';
   }
+  }
+  return 'unknown symbol'
 };
 
 const getModifierType = (modifier: ts.Token<ts.SyntaxKind>): string => {
